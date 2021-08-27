@@ -1,0 +1,384 @@
+---
+title: "R project 1"
+author: "kelvin njunge"
+date: "8/26/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# **Research Question**
+A Kenyan entrepreneur has created an online cryptography course and would want to advertise it on her blog. She currently targets audiences originating from various countries. In the past, she ran ads to advertise a related course on the same blog and collected data in the process. She would now like to employ your services as a Data Science Consultant to help her identify which individuals are most likely to click on her ads.
+
+## **1. Defining the question**
+
+### **1.1  Specifying the data analytic objective**
+Our main aim is to do thorough exploratory data analysis for univariate and bivariate and come up with recommendations for our client.
+
+### **1.2 Defining the metric  for success**
+We aim to do a elaborate  visualizations for univariate and bivariate anaysis.
+
+### **1.3. Recording the experimental design**
+* Loading the data
+* Checking the data
+* Tidying the data
+* univariate analysis
+* Bivariate analysis
+* Challenge the solution
+* Recommendation
+* Follow up questions
+
+### **1.4. Data Relevance**
+The data provided was relevant for our analysis
+
+## ***Loading the data***
+
+```{r}
+getwd()
+```
+```{r}
+df <- read.csv("C:\\Users\\Ricky\\Documents\\Adobe\\advertising.csv")
+```
+
+## *** Checking the data***
+### ***Viewing the top 6 entries***
+```{r}
+head(df)
+
+```
+
+### *** Viewing the bottom 6 entries***
+```{r}
+tail(df)
+
+```
+### *** viewingthe info of the dataset***
+```{r}
+str(df)
+
+```
+
+## *** 3. Tidying the data***
+### ***Checking for null values***
+```{r}
+any(is.na(df))
+
+```
+
+### *** Checking for duplicates***
+```{r}
+sum(duplicated(df))
+
+```
+There are no missing values in our data.
+There are no duplicates in our data.
+
+### *** Checking for outliers***
+```{r}
+boxplot(df$Area.Income,main="Boxplot for Area.Income",col = "cyan")
+
+```
+
+```{r}
+boxplot(df$Daily.Internet.Usage,main="Boxplot for Daily.Internet.Usage",col="brown")
+```
+
+```{r}
+
+boxplot(df$Male,main="Boxplot for Male",col = "violet")
+```
+
+```{r}
+boxplot(df$Age,main="Boxplot for Age",col = "orange")
+
+
+```
+
+```{r}
+boxplot(df$Clicked.on.Ad,main="Boxplot for Clicked.on.Ad",col = "green")
+
+```
+
+
+Area income was the only column that had outliers
+
+## ***4. Univariate analysis***
+### *** 4.1. measures of central tendency ***
+### ***4.1.1 mean***
+
+```{r}
+print("The mean for numeric variables is:")
+colMeans(df[sapply(df,is.numeric)])
+```
+
+### ***4.1.2 median***
+```{r}
+cat("The median for daily time spent on site is",median(df$Daily.Time.Spent.on.Site))
+cat("\n")
+```
+
+```{r}
+cat("The median for age is",median(df$Age))
+cat("\n")
+```
+
+```{r}
+cat("The median for Area.Income is",median(df$Area.Income))
+cat("\n")
+```
+
+```{r}
+cat("The median for daily Internet Usage is",median(df$Daily.Internet.Usage))
+cat("\n")
+```
+
+```{r}
+cat("The median for Clicked on Ad",median(df$Clicked.on.Ad))
+
+cat("\n")
+```
+
+### ***4.1.3 mode***
+```{r}
+#Creating a function for the mode
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+```
+```{r}
+cat("The mode for daily time spent on site is",getmode(df$Daily.Time.Spent.on.Site))
+cat("\n")
+```
+```{r}
+cat("The mode for age is",getmode(df$Age))
+cat("\n")
+```
+```{r}
+cat("The mode for Area.Income is",getmode(df$Area.Income))
+cat("\n")
+```
+
+```{r}
+cat("The mode for daily Internet Usage is",getmode(df$Daily.Internet.Usage))
+cat("\n")
+```
+
+```{r}
+cat("The mode for Clicked on Ad",getmode(df$Clicked.on.Ad))
+cat("\n")
+```
+
+### *** 4.1.4 standard deviation ***
+```{r}
+cat("The standard deviation for age is",sd(df$`Age`))
+cat("\n")
+```
+```{r}
+cat("The standard deviation for Area.Income is",sd(df$`Area Income`))
+cat("\n")
+```
+```{r}
+cat("The mode for daily time spent on site is",sd(df$Daily.Time.Spent.on.Site))
+cat("\n")
+```
+
+
+### *** 4.1.5. variance***
+```{r}
+cat("The variance for daily time spent on site is",var(df$Daily.Time.Spent.on.Site))
+cat("\n")
+```
+```{r}
+cat("The variance for age is",var(df$Age))
+
+```
+
+```{r}
+cat("The variance for daily Internet Usage is",var(df$Daily.Internet.Usage))
+```
+```{r}
+cat("The variance for Clicked on Ad",var(df$Clicked.on.Ad))
+```
+
+```{r}
+cat("The variance for Area.Income is",var(df$Area.Income))
+```
+
+```{r}
+cat("The variance for male is",var(df$Male))
+```
+
+### ***4.2.2 maximum***
+```{r}
+library(dplyr)
+df %>% summarise_if(is.numeric, max)
+
+```
+
+### *** minimum of the columns *** 
+```{r}
+df %>% summarise_if(is.numeric,min)
+```
+
+### *** 4.2.3 Range ***
+```{r}
+cat("The range for daily time spent on site is",range(df$Daily.Time.Spent.on.Site))
+```
+```{r}
+cat("The range for age is",range(df$Age))
+```
+
+```{r}
+cat("The range for Area income is",range(df$Area.Income))
+```
+
+```{r}
+cat("The range for male is",range(df$Male))
+```
+
+```{r}
+cat("The range  for daily internet usage is,",range(df$Daily.Internet.Usage))
+```
+```{r}
+cat("The range for clicked on ad",range(df$Clicked.on.Ad))
+```
+
+### *** 4.2.3 Quantile ***
+```{r}
+
+cat("The Quantile for age is",quantile(df$`Age`))
+
+cat("The Quantile for male is",quantile(df$`Male`))
+
+
+```
+
+### Summary
+```{r}
+summary(df)
+```
+
+
+
+
+## *** Univariate***
+```{r}
+frequency <- table(df$Male)
+frequency
+barplot(frequency,col=c("Cyan","lightgreen"),main="Barchart for Male",xlab = "Male",ylab = "Total Count")
+```
+
+```{r}
+frequency <- table(df$Clicked.on.Ad)
+frequency
+barplot(frequency,col=c("green","purple"),main="Barchart for Clicked on Ad",xlab = "Clicked on Add",ylab = "Total Count")
+```
+
+```{r}
+frequency <- table(df$Age)
+frequency
+barplot(frequency,main="Barchart for Age",xlab = "Age",ylab = "Total Count")
+```
+
+### ***Histograms***
+
+```{r}
+library("ggplot2")
+```
+```{r}
+ggplot(df, aes(Daily.Internet.Usage)) + geom_histogram(bins = 20, color = 'cyan') + 
+    labs(title = 'Daily internet usage distribution', x = 'Daily internet usage', y = 'Frequency')
+```
+There is no particular pattern for the daily internet usage
+
+```{r}
+ggplot(df, aes(Area.Income)) + geom_histogram(bins = 20, color = 'cyan') + 
+    labs(title = 'Income distribution', x = 'Income', y = 'Frequency')
+```
+Most People were earning between 50,000 and 70,000.
+
+```{r}
+ggplot(df, aes(Daily.Time.Spent.on.Site)) + geom_histogram(bins = 20, color = 'cyan') + 
+    labs(title = 'Daily time spent on site distribution', x = 'Daily time spent on site', y = 'Frequency')
+```
+Majority of the people spent about 60-80 minutes on the blog site.
+
+```{r}
+ggplot(df, aes(Age)) + geom_histogram(bins = 20, color = 'cyan') + 
+    labs(title = 'Age distribution', x = 'Age', y = 'Frequency')
+```
+Most of the respondents are between the ages of 25 and 50.
+
+### Bivariate  analysis
+ #### covariance
+```{r}
+covarince <- cov(df[,sapply(df,is.numeric)])
+covarince
+```
+### correlation  of all numeric variable
+```{r}
+df.cor = cor(df[,sapply(df,is.numeric)],method = c('spearman'))
+df.cor
+```
+
+```{r}
+library(corrplot)
+```
+
+#### Correlation plot
+```{r}
+corrplot(df.cor,method="number",main="Correlatio of numerical variables")
+```
+#### Heatmap
+```{r}
+heatmap(x=df.cor)
+```
+
+###scatterplots```
+
+#Scatter plot for area in income vs daily internet usage
+
+```{r}
+ggplot(df, aes(x = Area.Income, y = Daily.Internet.Usage )) +
+  geom_point() + labs(title = 'Scatter plot for area in income vs daily internet usage')
+```
+
+```{r}
+#Scatter plot for age vs daily time spent on site
+ggplot(df, aes(x = Age, y = Daily.Time.Spent.on.Site)) +
+  geom_point() + labs(title = 'Scatter plot for age vs daily time spent on site')
+```
+
+Most people who spend time on site are between ages of 30-50
+
+
+
+
+```{r}
+# Scatter plot of internet usage 
+ggplot(df, aes(x =Daily.Internet.Usage, y = Daily.Time.Spent.on.Site,color = Clicked.on.Ad)) +geom_point()+geom_smooth()+ labs(title = 'Scatter plot age vs area in income')
+```
+The time spent by the respondents on site does not necessarily translate to the respondents clicking on ads.
+```{r}
+df %>% group_by(Country, Daily.Internet.Usage)%>% head(10)%>% arrange(desc(Daily.Internet.Usage))
+```
+
+```{r}
+df %>% group_by(Country, Daily.Time.Spent.on.Site)%>% head(10)%>% arrange(desc(Daily.Time.Spent.on.Site))
+```
+
+
+# *** Conlusions***
+1. The ages between 26 and 42 record the highest frequency of ad clicks on the site and also the highest amount of time spent on the internet.
+
+2. Income levels between 50k to 70k record the highest frequency of ad clicks on the site.
+
+3. People who spend more time on the internet have a high income.
+Tunisia, Italy and San Marino are the top 3 countries with the highest internet usage. However, Myanmar, Nauru and Grenada spend the most time on the site.
+
+# *** Recommendations***
+1. Ad posted on client's should be more relevant to people of age between 30 - 40
+
+2. Target on top ten countries spending more time on the internet
